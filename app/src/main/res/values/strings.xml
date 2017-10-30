@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">TP2Graphes</string>
+    <string name="modifierEtiquette">Modifier l\'étiquette</string>
+    <string name="modifierTaille">Modifier la taille</string>
+    <string name="modifierCouleur">Modifier la couleur</string>
+    <string name="supprimerNoeud">Supprimer le noeud</string>
+    <string name="modeModifier">Mode de modification</string>
+    <string name="modeCreation">Mode de création</string>
+
+    <string-array name="color_arrays">
+        <item>Rouge</item>
+        <item>Vert</item>
+        <item>Bleu</item>
+        <item>Orange</item>
+        <item>Cyan</item>
+        <item>Magenta</item>
+        <item>Noir</item>
+    </string-array>
+</resources>
