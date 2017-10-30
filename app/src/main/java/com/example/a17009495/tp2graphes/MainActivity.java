@@ -89,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
+                //test de commit git
+
                 if(modeCreation){
                     // set title
                     alertDialogBuilder.setTitle("Création nouveau noeud");
