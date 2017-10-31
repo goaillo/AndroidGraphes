@@ -48,4 +48,8 @@ public class Node extends RectF{
         super.set(centerx - rayonDefault, centery - rayonDefault, centerx + rayonDefault, centery + rayonDefault);
     }
 
+    public float getRayonDefault(){
+        return rayonDefault;
+    }
+
 }

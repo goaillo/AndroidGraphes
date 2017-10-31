@@ -121,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
                     alertDialog = alertDialogBuilder.create();
                     // show it
                     alertDialog.show();
+                } else if (onNode && modeCreationArc){
+
                 }
                 return true;
             }

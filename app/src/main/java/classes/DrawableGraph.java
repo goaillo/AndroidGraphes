@@ -7,6 +7,10 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.example.a17009495.tp2graphes.MainActivity;
 
 /**
  * Created by 17009495 on 04/10/17.
@@ -37,8 +41,16 @@ public class DrawableGraph extends Drawable {
         pEt.setColor(Color.WHITE);
         pEt.setTextSize(30);
         pEt.setTextAlign(Paint.Align.CENTER);
+
         for(Node n : graph.getNodes()) {
+            float tailleTexte = pEt.measureText(n.getEtiquette())/ 2;
+            if(n.getRayonDefault()< tailleTexte){
+                n.setRayonDefault(tailleTexte + 10);
+            }else if (tailleTexte<40){
+                n.setRayonDefault(40);
+            }
             p.setColor(n.getColor());
+
             canvas.drawRoundRect(n, 40, 40, p);
             canvas.drawText(n.getEtiquette(), n.centerX(), n.centerY(), pEt);
         }
