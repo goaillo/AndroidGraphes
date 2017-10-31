@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.Toolbar;
+
 import classes.DrawableGraph;
 import classes.Graph;
 import classes.Node;
@@ -321,16 +323,19 @@ public class MainActivity extends AppCompatActivity {
                 modeCreationArc = false;
                 modeCreationNoeud = false;
                 modeModification = true;
+                this.setTitle(R.string.modeModifier);
                 return true;
             case R.id.modeCreationArc:
                 modeCreationArc = true;
                 modeCreationNoeud = false;
                 modeModification = false;
+                this.setTitle(R.string.modeCreationArc);
                 return true;
             case R.id.modeCreationNoeud:
                 modeCreationArc = false;
                 modeCreationNoeud = true;
                 modeModification = false;
+                this.setTitle(R.string.modeCreationNoeud);
                 return true;
         }
 
