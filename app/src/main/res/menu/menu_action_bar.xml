@@ -9,9 +9,15 @@
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/modeCreation"
+        android:id="@+id/modeCreationArc"
         android:icon="@android:drawable/ic_menu_delete"
-        android:title="@string/modeCreation"
+        android:title="@string/modeCreationArc"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/modeCreationNoeud"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="@string/modeCreationNoeud"
         app:showAsAction="never" />
 
 </menu>

@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private Boolean onNode = false;
     private Node activNode;
     private String value;
-    private boolean modeCreation = true, modeModification = false;
+    private boolean modeCreationArc = true, modeCreationNoeud = false, modeModification = false;
 
 
     @Override
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //test de commit git
 
-                if(modeCreation){
+                if(modeCreationNoeud){
                     // set title
                     alertDialogBuilder.setTitle("Création nouveau noeud");
 
@@ -318,11 +318,18 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.modeModifier:
-                modeCreation = false;
+                modeCreationArc = false;
+                modeCreationNoeud = false;
                 modeModification = true;
                 return true;
-            case R.id.modeCreation:
-                modeCreation = true;
+            case R.id.modeCreationArc:
+                modeCreationArc = true;
+                modeCreationNoeud = false;
+                modeModification = false;
+                return true;
+            case R.id.modeCreationNoeud:
+                modeCreationArc = false;
+                modeCreationNoeud = true;
                 modeModification = false;
                 return true;
         }

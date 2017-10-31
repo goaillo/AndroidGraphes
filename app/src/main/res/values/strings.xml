@@ -5,7 +5,8 @@
     <string name="modifierCouleur">Modifier la couleur</string>
     <string name="supprimerNoeud">Supprimer le noeud</string>
     <string name="modeModifier">Mode de modification</string>
-    <string name="modeCreation">Mode de création</string>
+    <string name="modeCreationArc">Mode de création arc</string>
+    <string name="modeCreationNoeud">Mode de création noeud</string>
 
     <string-array name="color_arrays">
         <item>Rouge</item>
