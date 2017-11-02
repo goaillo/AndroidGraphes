@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PixelFormat;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -25,25 +26,44 @@ public class DrawableGraph extends Drawable {
 
     @Override
     public void draw(Canvas canvas) {
-        Paint p2 = new Paint();
-        p2.setStrokeWidth(5);
-        p2.setStyle(Paint.Style.STROKE);
-        Path path = new Path();
-        for(Arc a : graph.getArcs()){
-            p2.setColor(a.getColor());
-            path.moveTo(a.getNodeFrom().centerX(),a.getNodeFrom().centerY());
-            path.quadTo((a.getNodeFrom().centerX()+a.getNodeTo().centerX())/2, (a.getNodeFrom().centerY()+a.getNodeTo().centerY())/2, a.getNodeTo().centerX(), a.getNodeTo().centerY());
-            canvas.drawPath(path,p2);
+
+        Paint pArc = new Paint();
+        pArc.setStrokeWidth(5);
+        pArc.setColor(Color.WHITE);
+        pArc.setStyle(Paint.Style.STROKE);
+        Path path;
+
+        //On dessine d'abord les arcs
+        for(ArcFinal a : graph.getArcs()){
+            path = new Path();
+            path.moveTo(a.getNodeFrom().centerX(), a.getNodeFrom().centerY());
+            if (a instanceof ArcBoucle) {
+                // Dessiner boucle
+            } else{
+                path.lineTo(a.getNodeTo().centerX(), a.getNodeTo().centerY());
+            }
+            canvas.drawPath(path, pArc);
+
+        }
+
+        //On dessine un arc temporaire si il est en cours de création
+        ArcTemporaire tempArc = graph.getArcTemp();
+        if (tempArc != null) {
+            path = new Path();
+            path.moveTo(tempArc.getNodeFrom().centerX(), tempArc.getNodeFrom().centerY());
+            path.lineTo(tempArc.getNodeX(), tempArc.getNodeY());
+            canvas.drawPath(path, pArc);
         }
 
         Paint p = new Paint();
-        Paint pEt = new Paint();
-        pEt.setColor(Color.WHITE);
-        pEt.setTextSize(30);
-        pEt.setTextAlign(Paint.Align.CENTER);
+        Paint pTexte = new Paint();
+        pTexte.setColor(Color.WHITE);
+        pTexte.setTextSize(30);
+        pTexte.setTextAlign(Paint.Align.CENTER);
 
+        //On dessine ensuite les noeuds
         for(Node n : graph.getNodes()) {
-            float tailleTexte = pEt.measureText(n.getEtiquette())/ 2;
+            float tailleTexte = pTexte.measureText(n.getEtiquette())/ 2;
             if(n.getRayonDefault()< tailleTexte){
                 n.setRayonDefault(tailleTexte + 10);
             }else if (tailleTexte<40){
@@ -52,7 +72,7 @@ public class DrawableGraph extends Drawable {
             p.setColor(n.getColor());
 
             canvas.drawRoundRect(n, 40, 40, p);
-            canvas.drawText(n.getEtiquette(), n.centerX(), n.centerY(), pEt);
+            canvas.drawText(n.getEtiquette(), n.centerX(), n.centerY(), pTexte);
         }
 
 
@@ -71,6 +91,6 @@ public class DrawableGraph extends Drawable {
 
     @Override
     public int getOpacity() {
-        return 0;
+        return PixelFormat.UNKNOWN;
     }
 }

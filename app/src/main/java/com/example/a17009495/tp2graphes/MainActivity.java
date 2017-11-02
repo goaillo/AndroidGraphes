@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ActionBarContextView;
 import android.text.InputType;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -21,6 +22,8 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import classes.Arc;
+import classes.ArcBoucle;
+import classes.ArcFinal;
 import classes.DrawableGraph;
 import classes.Graph;
 import classes.Node;
@@ -58,57 +61,32 @@ public class MainActivity extends AppCompatActivity {
 
 
         imgv.setOnTouchListener(new View.OnTouchListener() {
+            boolean wasOnNode = false;
+            Float xBeginArc, yBeginArc;
+            Node arcBeginNode;
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                lastTouchDownX = event.getX();
+                lastTouchDownY = event.getY();
 
-                // save the X,Y coordinates
-                if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                    lastTouchDownX = event.getX();
-                    lastTouchDownY = event.getY();
-                    if(modeDeplacementNoeuds)
-                    {
-                        for(Node n :  firstGraph.getNodes()) {
-                            if (n.contains(lastTouchDownX, lastTouchDownY)) {
-                                onNode = true;
-                                activNode = n;
-                                return false;
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        if (isOnNode()) {
+                            arcBeginNode = activNode;
+                            wasOnNode = true;
+                            xBeginArc = lastTouchDownX;
+                            yBeginArc = lastTouchDownY;
+                            if(modeCreationArc){
+                                firstGraph.initArcTemp(lastTouchDownX ,lastTouchDownY);
                             }
+                            updateView();
+                        } else {
+                            activNode = null;
                         }
-                    }
-                    if(modeCreationArc)
-                    {
-                        for(Node n :  firstGraph.getNodes()) {
-                            if (n.contains(lastTouchDownX, lastTouchDownY)) {
-                                activNode = n;
-                                return false;
-                            }
-                        }
-                    }
-
-                }
-
-                if (event.getActionMasked() == MotionEvent.ACTION_MOVE) {
-                    lastTouchDownX = event.getX();
-                    lastTouchDownY = event.getY();
-                    if(modeDeplacementNoeuds && onNode){
-                        activNode.setCenter(lastTouchDownX, lastTouchDownY);
-                        updateView();
-                    }
-                }
-
-                if (event.getActionMasked() == MotionEvent.ACTION_UP) {
-                    lastTouchUpX = event.getX();
-                    lastTouchUpY = event.getY();
-                    if(modeDeplacementNoeuds && onNode){
-                        activNode.setCenter(lastTouchUpX, lastTouchUpY);
-                        onNode = false;
-                        updateView();
-                    }
-                    if(modeCreationArc)
-                    {
-                        for(Node n :  firstGraph.getNodes()) {
-                            if (n.contains(lastTouchUpX, lastTouchUpY)) {
-                                toNode = n;
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if (modeCreationArc) {
+                            if (wasOnNode && isOnNode()) {
                                 final EditText input = new EditText(MainActivity.this);
                                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
                                 alertDialogBuilder.setTitle("Etiquette de l'arc");
@@ -122,11 +100,12 @@ public class MainActivity extends AppCompatActivity {
                                                 // current activity
                                                 etiquette = input.getText().toString();
 
-                                                Node node = new Node(lastTouchDownX, lastTouchDownY, etiquette, Color.BLACK);
                                                 if(etiquette.length()>0){
-                                                    Arc newArc = new Arc(activNode, toNode, Color.RED, etiquette);
-                                                    firstGraph.addArc(newArc);
-                                                    updateView();
+                                                    if (arcBeginNode == activNode) {
+                                                        firstGraph.addArc(new ArcBoucle(activNode,etiquette));
+                                                    } else {
+                                                        firstGraph.addArc(new ArcFinal(arcBeginNode, activNode,etiquette));
+                                                    }
                                                     input.setText("");
                                                 }
 
@@ -138,10 +117,26 @@ public class MainActivity extends AppCompatActivity {
                                 alertDialog = alertDialogBuilder.create();
                                 // show it
                                 alertDialog.show();
-                                return false;
                             }
+                            firstGraph.makeArcTempNull();
+                        } else if(modeDeplacementNoeuds && isOnNode()){
+                            activNode.setCenter(lastTouchDownX, lastTouchDownY);
+                            onNode = false;
+
                         }
-                    }
+                        updateView();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+
+                        if (modeCreationArc) {
+                            if(firstGraph.getArcTemp() != null){
+                                firstGraph.setArcTemp(lastTouchDownX,lastTouchDownY);
+                            }
+                        }else if(modeDeplacementNoeuds && isOnNode()){
+                            activNode.setCenter(lastTouchDownX, lastTouchDownY);
+                        }
+                        updateView();
+                        break;
                 }
                 return false;
             }
@@ -425,5 +420,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean isOnNode(){
+        activNode = firstGraph.getOneNode(lastTouchDownX,lastTouchDownY);
+        return activNode != null;
     }
 }
