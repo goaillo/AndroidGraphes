@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import classes.Arc;
 import classes.DrawableGraph;
 import classes.Graph;
 import classes.Node;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog alertDialog;
     private String etiquette;
     private Boolean onNode = false;
-    private Node activNode;
+    private Node activNode, toNode;
     private String value;
     private boolean modeCreationArc = true,modeDeplacementNoeuds = false, modeCreationNoeud = false, modeModification = false;
 
@@ -74,6 +75,15 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     }
+                    if(modeCreationArc)
+                    {
+                        for(Node n :  firstGraph.getNodes()) {
+                            if (n.contains(lastTouchDownX, lastTouchDownY)) {
+                                activNode = n;
+                                return false;
+                            }
+                        }
+                    }
 
                 }
 
@@ -93,6 +103,44 @@ public class MainActivity extends AppCompatActivity {
                         activNode.setCenter(lastTouchUpX, lastTouchUpY);
                         onNode = false;
                         updateView();
+                    }
+                    if(modeCreationArc)
+                    {
+                        for(Node n :  firstGraph.getNodes()) {
+                            if (n.contains(lastTouchUpX, lastTouchUpY)) {
+                                toNode = n;
+                                final EditText input = new EditText(MainActivity.this);
+                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+                                alertDialogBuilder.setTitle("Etiquette de l'arc");
+
+                                // set dialog message
+                                alertDialogBuilder
+                                        .setMessage("Entrez l'étiquette")
+                                        .setPositiveButton("Ajouter",new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog,int id) {
+                                                // if this button is clicked, close
+                                                // current activity
+                                                etiquette = input.getText().toString();
+
+                                                Node node = new Node(lastTouchDownX, lastTouchDownY, etiquette, Color.BLACK);
+                                                if(etiquette.length()>0){
+                                                    Arc newArc = new Arc(activNode, toNode, Color.RED, etiquette);
+                                                    firstGraph.addArc(newArc);
+                                                    updateView();
+                                                    input.setText("");
+                                                }
+
+                                            }
+                                        });
+
+                                alertDialogBuilder.setView(input);
+                                // create alert dialog
+                                alertDialog = alertDialogBuilder.create();
+                                // show it
+                                alertDialog.show();
+                                return false;
+                            }
+                        }
                     }
                 }
                 return false;

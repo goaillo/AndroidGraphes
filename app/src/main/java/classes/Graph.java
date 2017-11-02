@@ -45,6 +45,12 @@ public class Graph {
 
     public void removeNode(Node n) {nodes.remove(n);}
 
+    public void addArc(Arc a){
+        arcs.add(a);
+    }
+
+    public void removeArc(Arc a) {arcs.remove(a);}
+
     public Collection<Node> getNodes() {
         return new ArrayList<Node>(nodes);
     }
