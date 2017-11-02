@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private Boolean onNode = false;
     private Node activNode;
     private String value;
-    private boolean modeCreationArc = true, modeCreationNoeud = false, modeModification = false;
+    private boolean modeCreationArc = true,modeDeplacementNoeuds = false, modeCreationNoeud = false, modeModification = false;
 
 
     @Override
@@ -64,11 +64,36 @@ public class MainActivity extends AppCompatActivity {
                 if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
                     lastTouchDownX = event.getX();
                     lastTouchDownY = event.getY();
+                    if(modeDeplacementNoeuds)
+                    {
+                        for(Node n :  firstGraph.getNodes()) {
+                            if (n.contains(lastTouchDownX, lastTouchDownY)) {
+                                onNode = true;
+                                activNode = n;
+                                return false;
+                            }
+                        }
+                    }
+
+                }
+
+                if (event.getActionMasked() == MotionEvent.ACTION_MOVE) {
+                    lastTouchDownX = event.getX();
+                    lastTouchDownY = event.getY();
+                    if(modeDeplacementNoeuds && onNode){
+                        activNode.setCenter(lastTouchDownX, lastTouchDownY);
+                        updateView();
+                    }
                 }
 
                 if (event.getActionMasked() == MotionEvent.ACTION_UP) {
                     lastTouchUpX = event.getX();
                     lastTouchUpY = event.getY();
+                    if(modeDeplacementNoeuds && onNode){
+                        activNode.setCenter(lastTouchUpX, lastTouchUpY);
+                        onNode = false;
+                        updateView();
+                    }
                 }
                 return false;
             }
@@ -323,21 +348,31 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.modeModifier:
                 modeCreationArc = false;
+                modeDeplacementNoeuds = false;
                 modeCreationNoeud = false;
                 modeModification = true;
                 this.setTitle(R.string.modeModifier);
                 return true;
             case R.id.modeCreationArc:
+                modeDeplacementNoeuds = false;
                 modeCreationArc = true;
                 modeCreationNoeud = false;
                 modeModification = false;
                 this.setTitle(R.string.modeCreationArc);
                 return true;
             case R.id.modeCreationNoeud:
+                modeDeplacementNoeuds = false;
                 modeCreationArc = false;
                 modeCreationNoeud = true;
                 modeModification = false;
                 this.setTitle(R.string.modeCreationNoeud);
+                return true;
+            case R.id.modeDeplacementNoeuds:
+                modeDeplacementNoeuds = true;
+                modeCreationArc = false;
+                modeCreationNoeud = false;
+                modeModification = false;
+                this.setTitle(R.string.modeDeplacementNoeuds);
                 return true;
         }
 

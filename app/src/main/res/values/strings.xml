@@ -7,7 +7,7 @@
     <string name="modeModifier">Mode de modification</string>
     <string name="modeCreationArc">Mode de création arc</string>
     <string name="modeCreationNoeud">Mode de création noeud</string>
-
+    <string name="modeDeplacementNoeuds">Mode de déplacements des noeuds</string>
     <string-array name="color_arrays">
         <item>Rouge</item>
         <item>Vert</item>

@@ -34,6 +34,12 @@ public class Node extends RectF{
         this.color = color;
     }
 
+    public void setCenter(float centerx, float centery)
+    {
+        this.centerx = centerx;
+        this.centery = centery;
+    }
+
     public String getEtiquette() {
         return etiquette;
     }
