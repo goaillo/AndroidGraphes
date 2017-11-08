@@ -5,6 +5,7 @@ package classes;
  */
 
 public class ArcTemporaire extends Arc{
+
     private float nodeX, nodeY;
 
     public ArcTemporaire(Node _nodeFrom) {
@@ -28,4 +29,5 @@ public class ArcTemporaire extends Arc{
     public void setNodeY(float _nodeY) {
         this.nodeY = _nodeY;
     }
+
 }

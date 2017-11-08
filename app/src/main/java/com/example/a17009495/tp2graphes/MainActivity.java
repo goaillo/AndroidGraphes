@@ -107,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
                                                         firstGraph.addArc(new ArcFinal(arcBeginNode, activNode,etiquette));
                                                     }
                                                     input.setText("");
+                                                    arcBeginNode = null;
+                                                    wasOnNode = false;
                                                 }
 
                                             }
@@ -117,25 +119,29 @@ public class MainActivity extends AppCompatActivity {
                                 alertDialog = alertDialogBuilder.create();
                                 // show it
                                 alertDialog.show();
+                                updateView();
+                            }else {
+                                arcBeginNode = null;
+                                wasOnNode = false;
                             }
                             firstGraph.makeArcTempNull();
-                        } else if(modeDeplacementNoeuds && isOnNode()){
-                            activNode.setCenter(lastTouchDownX, lastTouchDownY);
-                            onNode = false;
-
+                        }else {
+                            arcBeginNode = null;
                         }
-                        updateView();
+
                         break;
                     case MotionEvent.ACTION_MOVE:
 
                         if (modeCreationArc) {
                             if(firstGraph.getArcTemp() != null){
                                 firstGraph.setArcTemp(lastTouchDownX,lastTouchDownY);
+                                updateView();
                             }
                         }else if(modeDeplacementNoeuds && isOnNode()){
                             activNode.setCenter(lastTouchDownX, lastTouchDownY);
+                            updateView();
                         }
-                        updateView();
+
                         break;
                 }
                 return false;

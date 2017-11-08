@@ -5,9 +5,11 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.graphics.PixelFormat;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.media.midi.MidiInputPort;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -32,15 +34,24 @@ public class DrawableGraph extends Drawable {
         pArc.setColor(Color.WHITE);
         pArc.setStyle(Paint.Style.STROKE);
         Path path;
-
+        Path pathTemp;
         //On dessine d'abord les arcs
         for(ArcFinal a : graph.getArcs()){
+            float [] midPoint = {0f, 0f};
+            float [] tangent = {0f, 0f};
             path = new Path();
-            path.moveTo(a.getNodeFrom().centerX(), a.getNodeFrom().centerY());
+            pathTemp = new Path();
+            pathTemp.moveTo(a.getNodeFrom().centerX(), a.getNodeFrom().centerY());
+
             if (a instanceof ArcBoucle) {
                 // Dessiner boucle
-            } else{
-                path.lineTo(a.getNodeTo().centerX(), a.getNodeTo().centerY());
+
+            } else {
+                pathTemp.lineTo(a.getNodeTo().centerX(), a.getNodeTo().centerY());
+                PathMeasure pm = new PathMeasure(pathTemp,false);
+                pm.getPosTan(pm.getLength(),midPoint,tangent);
+                path.moveTo(a.getNodeFrom().centerX(), a.getNodeFrom().centerY());
+                path.quadTo(midPoint[0],midPoint[1], a.getNodeTo().centerX(), a.getNodeTo().centerY());
             }
             canvas.drawPath(path, pArc);
 
