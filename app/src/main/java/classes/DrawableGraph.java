@@ -52,6 +52,8 @@ public class DrawableGraph extends Drawable {
                 pm.getPosTan(pm.getLength(),midPoint,tangent);
                 path.moveTo(a.getNodeFrom().centerX(), a.getNodeFrom().centerY());
                 path.quadTo(midPoint[0],midPoint[1], a.getNodeTo().centerX(), a.getNodeTo().centerY());
+                a.setMidPoint(midPoint);
+                a.setTangent(tangent);
             }
             canvas.drawPath(path, pArc);
 
@@ -77,9 +79,10 @@ public class DrawableGraph extends Drawable {
             float tailleTexte = pTexte.measureText(n.getEtiquette())/ 2;
             if(n.getRayonDefault()< tailleTexte){
                 n.setRayonDefault(tailleTexte + 10);
-            }else if (tailleTexte<40){
+            }else if (n.getRayonDefault() != 40 && tailleTexte<40){
                 n.setRayonDefault(40);
             }
+
             p.setColor(n.getColor());
 
             canvas.drawRoundRect(n, 40, 40, p);

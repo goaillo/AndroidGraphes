@@ -332,7 +332,6 @@ public class MainActivity extends AppCompatActivity {
                                 value = inputTaille.getText().toString();
 
                                 if(value.length()>0 && value != null){
-                                    Toast.makeText(getApplicationContext(), value, Toast.LENGTH_LONG).show();
                                     activNode.setRayonDefault(Float.valueOf(value));
                                     updateView();
                                     inputTaille.setText("");
