@@ -125,7 +125,12 @@ public class MainActivity extends AppCompatActivity {
                                 wasOnNode = false;
                             }
                             firstGraph.makeArcTempNull();
-                        }else {
+                        }else if (modeDeplacementNoeuds && isOnNode()){
+                            activNode.setCenter(lastTouchDownX, lastTouchDownY);
+                            onNode = false;
+                            updateView();
+                        }//
+                        else {
                             arcBeginNode = null;
                         }
 
