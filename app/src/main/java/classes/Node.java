@@ -13,12 +13,13 @@ public class Node extends RectF{
     private String etiquette;
     private int color;
     private float centerx, centery;
-    private static float rayonDefault;
+    private static float rayonDefault = 40;
+    private float rayon;
 
     public Node(float centerx, float centery, String etiquette, int color) {
 
         super(centerx - 40, centery - 40, centerx + 40, centery + 40);
-        rayonDefault = 40;
+        rayon = rayonDefault;
         this.centerx = centerx;
         this.centery = centery;
         this.etiquette = etiquette;
@@ -38,7 +39,7 @@ public class Node extends RectF{
     {
         this.centerx = centerx;
         this.centery = centery;
-        super.set(centerx - rayonDefault, centery - rayonDefault, centerx + rayonDefault, centery + rayonDefault);
+        super.set(centerx - rayon, centery - rayon, centerx + rayon, centery + rayon);
     }
 
     public String getEtiquette() {
@@ -51,8 +52,9 @@ public class Node extends RectF{
 
     public void setRayonDefault(float taille)
     {
-        this.rayonDefault = taille;
-        super.set(centerx - rayonDefault, centery - rayonDefault, centerx + rayonDefault, centery + rayonDefault);
+        this.rayon = taille;
+        super.set(centerx - rayon, centery - rayon, centerx + rayon, centery + rayon);
+
     }
 
     public float getRayonDefault(){

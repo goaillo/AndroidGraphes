@@ -79,12 +79,9 @@ public class DrawableGraph extends Drawable {
             float tailleTexte = pTexte.measureText(n.getEtiquette())/ 2;
             if(n.getRayonDefault()< tailleTexte){
                 n.setRayonDefault(tailleTexte + 10);
-            }else if (n.getRayonDefault() != 40 && tailleTexte<40){
-                n.setRayonDefault(40);
             }
 
             p.setColor(n.getColor());
-
             canvas.drawRoundRect(n, 40, 40, p);
             canvas.drawText(n.getEtiquette(), n.centerX(), n.centerY(), pTexte);
         }
