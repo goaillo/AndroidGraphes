@@ -38,6 +38,7 @@ public class Node extends RectF{
     {
         this.centerx = centerx;
         this.centery = centery;
+        super.set(centerx - rayonDefault, centery - rayonDefault, centerx + rayonDefault, centery + rayonDefault);
     }
 
     public String getEtiquette() {
