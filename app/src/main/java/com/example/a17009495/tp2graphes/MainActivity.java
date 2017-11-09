@@ -119,12 +119,13 @@ public class MainActivity extends AppCompatActivity {
                                 alertDialog = alertDialogBuilder.create();
                                 // show it
                                 alertDialog.show();
-                                updateView();
+
                             }else {
                                 arcBeginNode = null;
                                 wasOnNode = false;
                             }
                             firstGraph.makeArcTempNull();
+                            updateView();
                         }else if (modeDeplacementNoeuds && isOnNode()){
                             activNode.setCenter(lastTouchDownX, lastTouchDownY);
                             onNode = false;

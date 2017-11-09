@@ -42,15 +42,19 @@ public class DrawableGraph extends Drawable {
             path = new Path();
             pathTemp = new Path();
             pathTemp.moveTo(a.getNodeFrom().centerX(), a.getNodeFrom().centerY());
+            path.moveTo(a.getNodeFrom().centerX(), a.getNodeFrom().centerY());
 
             if (a instanceof ArcBoucle) {
+                Node n = a.getNodeFrom();
                 // Dessiner boucle
-
+                path.cubicTo(n.centerX()+n.getRayon()+60,n.centerY()+n.getRayon()+40,
+                        n.centerX()+n.getRayon()+60,n.centerY()-n.getRayon()-40,
+                        n.centerX(),n.centerY());
             } else {
+               //
                 pathTemp.lineTo(a.getNodeTo().centerX(), a.getNodeTo().centerY());
                 PathMeasure pm = new PathMeasure(pathTemp,false);
                 pm.getPosTan(pm.getLength(),midPoint,tangent);
-                path.moveTo(a.getNodeFrom().centerX(), a.getNodeFrom().centerY());
                 path.quadTo(midPoint[0],midPoint[1], a.getNodeTo().centerX(), a.getNodeTo().centerY());
                 a.setMidPoint(midPoint);
                 a.setTangent(tangent);

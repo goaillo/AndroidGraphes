@@ -61,4 +61,11 @@ public class Node extends RectF{
         return rayonDefault;
     }
 
+    public float getRayon() {
+        return rayon;
+    }
+
+    public void setRayon(float rayon) {
+        this.rayon = rayon;
+    }
 }
