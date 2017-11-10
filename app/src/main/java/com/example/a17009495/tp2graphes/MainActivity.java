@@ -3,6 +3,8 @@ package com.example.a17009495.tp2graphes;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog alertDialog;
     private String etiquette;
     private Boolean onNode = false;
-    private Node activNode, toNode;
+    private Node activNode;
+    private ArcFinal activArc;
     private String value;
     private boolean modeCreationArc = true,modeDeplacementNoeuds = false, modeCreationNoeud = false, modeModification = false;
 
@@ -80,8 +83,12 @@ public class MainActivity extends AppCompatActivity {
                                 firstGraph.initArcTemp(lastTouchDownX ,lastTouchDownY);
                             }
                             updateView();
-                        } else {
+                        } else if (isOnArc()){
+                            Toast.makeText(getApplicationContext(),"surArc",Toast.LENGTH_LONG).show();
+                        }
+                        else {
                             activNode = null;
+                            activArc = null;
                         }
                         break;
                     case MotionEvent.ACTION_UP:
@@ -146,6 +153,42 @@ public class MainActivity extends AppCompatActivity {
                         }else if(modeDeplacementNoeuds && isOnNode()){
                             activNode.setCenter(lastTouchDownX, lastTouchDownY);
                             updateView();
+                        } else if(modeModification && isOnArc()){
+                           /* Node nFrom = activArc.getNodeFrom(), nTo = activArc.getNodeTo();
+                            Path pathTemp = new Path();
+                            pathTemp.quadTo((nFrom.centerX()+nTo.centerX())/2,(nFrom.centerY()+nTo.centerY())/2,nTo.centerX(),nTo.centerY();
+
+                            float[] mid = {0, 0}, tan = {0, 0};
+                            PathMeasure pm = new PathMeasure(pathTemp,false);
+                            pm.getPosTan(pm.getLength()/2, mid, tan);
+
+                            float x1 = lastTouchDownX;
+                            float y1 = lastTouchDownY;
+
+                            float c = (tan[0]*(mid[0]-x1)+tan[1]*(mid[1]-y1))/(tan[0]*tan[0]+tan[1]*tan[1]);//dernier tan changé?
+
+                            float m1 = tan[1]/tan[0];
+                            float b1 = y1-m1*x1;
+
+                            float m2 = (y1-mid[1]+tan[1]*c)/(x1-mid[0]+tan[0]*c);
+                            float b2 = mid[1]-m2*mid[0];
+
+                            float x = (b2-b1)/(m1-m2);
+                            float y = m1*((b2-b1)/(m1-m2))+b1;
+
+
+                            if(tan[0]==0){
+                                x = x1;
+                                y = mid[1];
+                            }
+                            if(tan[1]==0){
+                                x = mid[0];
+                                y = y1;
+                            }
+
+                            float[] newMid = {x,y};
+                            activArc.setMidPoint(newMid);
+                            updateView();*/
                         }
 
                         break;
@@ -436,5 +479,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean isOnNode(){
         activNode = firstGraph.getOneNode(lastTouchDownX,lastTouchDownY);
         return activNode != null;
+    }
+
+    public boolean isOnArc(){
+        activArc = firstGraph.getOneArc(lastTouchDownX,lastTouchDownY);
+        return activArc != null;
     }
 }

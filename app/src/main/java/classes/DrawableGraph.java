@@ -149,7 +149,7 @@ public class DrawableGraph extends Drawable {
                //
                 pathTemp.lineTo(a.getNodeTo().centerX(), a.getNodeTo().centerY());
                 PathMeasure pm = new PathMeasure(pathTemp,false);
-                pm.getPosTan(pm.getLength(),midPoint,tangent);
+                pm.getPosTan(pm.getLength()/2,midPoint,tangent);
                 path.quadTo(midPoint[0],midPoint[1], a.getNodeTo().centerX(), a.getNodeTo().centerY());
                 a.setMidPoint(midPoint);
                 a.setTangent(tangent);

@@ -1,6 +1,8 @@
 package classes;
 
 import android.graphics.Color;
+import android.graphics.RectF;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -91,5 +93,20 @@ public class Graph {
 
     public void removeArc(ArcFinal a) {
         arcs.remove(a);
+    }
+
+    public ArcFinal getOneArc(float x, float y){
+        RectF r;
+        for (ArcFinal a : arcs){
+            float xMid = a.getMidPoint()[0];
+            float yMid = a.getMidPoint()[1];
+
+            r = new RectF(xMid-50,yMid-50,xMid+50,yMid+50);
+            if(r.contains(x,y)){
+
+                return a;
+            }
+        }
+        return null;
     }
 }
