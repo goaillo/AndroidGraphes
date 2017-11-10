@@ -121,17 +121,20 @@ public class DrawableGraph extends Drawable {
     @Override
     public void draw(Canvas canvas) {
 
-        Paint pArc = new Paint();
-        pArc.setStrokeWidth(5);
-        pArc.setColor(Color.WHITE);
-        pArc.setStyle(Paint.Style.STROKE);
+        Paint pArcTemp = new Paint();
+        pArcTemp.setStrokeWidth(5);
+        pArcTemp.setColor(Color.WHITE);
+        pArcTemp.setStyle(Paint.Style.STROKE);
         Path path;
         Path pathTemp;
 
 
-
         //On dessine d'abord les arcs
         for(ArcFinal a : graph.getArcs()){
+            Paint pArc = new Paint();
+            pArc.setStrokeWidth(a.getWidth());
+            pArc.setColor(a.getColor());
+            pArc.setStyle(Paint.Style.STROKE);
             float [] midPoint = {0f, 0f};
             float [] tangent = {0f, 0f};
             path = new Path();
@@ -169,7 +172,7 @@ public class DrawableGraph extends Drawable {
             path = new Path();
             path.moveTo(tempArc.getNodeFrom().centerX(), tempArc.getNodeFrom().centerY());
             path.lineTo(tempArc.getNodeX(), tempArc.getNodeY());
-            canvas.drawPath(path, pArc);
+            canvas.drawPath(path, pArcTemp);
         }
 
         Paint p = new Paint();

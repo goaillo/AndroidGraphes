@@ -8,6 +8,11 @@
     <string name="modeCreationArc">Mode de création arc</string>
     <string name="modeCreationNoeud">Mode de création noeud</string>
     <string name="modeDeplacementNoeuds">Mode de déplacements des noeuds</string>
+    <string name="modifierCouleurArc">Modifier la couleur de l\'arc</string>
+    <string name="supprimerArc">Supprimer l\'arc</string>
+    <string name="modifierTailleEtiquetteArc">Modifier la taille de l\'etiquette de l\'arc</string>
+    <string name="modifierEtiquetteArc">Modifier l\'etiquette l\'arc</string>
+    <string name="modifierLargeurArc">Modifier la largeur l\'arc</string>
     <string-array name="color_arrays">
         <item>Rouge</item>
         <item>Vert</item>

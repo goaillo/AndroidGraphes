@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private float lastTouchUpY;
     private AlertDialog alertDialog;
     private String etiquette;
-    private Boolean onNode = false;
+    private int largeur;
+    private Boolean onNode = false, onArc =false;
     private Node activNode;
     private ArcFinal activArc;
     private String value;
@@ -84,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                             updateView();
                         } else if (isOnArc()){
-                            Toast.makeText(getApplicationContext(),"surArc",Toast.LENGTH_LONG).show();
                         }
                         else {
                             activNode = null;
@@ -214,8 +214,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                //test de commit git
-
                 if(modeCreationNoeud){
                     // set title
                     alertDialogBuilder.setTitle("Création nouveau noeud");
@@ -244,8 +242,9 @@ public class MainActivity extends AppCompatActivity {
                     alertDialog = alertDialogBuilder.create();
                     // show it
                     alertDialog.show();
-                } else if (onNode && modeCreationArc){
-
+                } else if (modeModification){
+                    onArc = isOnArc();
+                    return false;
                 }
                 return true;
             }
@@ -262,19 +261,82 @@ public class MainActivity extends AppCompatActivity {
             MenuInflater inflater = this.getMenuInflater();
             inflater.inflate(R.menu.menu_contextuel_noeud, menu);
 
+        }else if(onArc && modeModification)
+        {
+            super.onCreateContextMenu(menu, v, menuInfo);
+            MenuInflater inflater = this.getMenuInflater();
+            inflater.inflate(R.menu.menu_contextuel_arc, menu);
         }
         onNode=false;
+        onArc = false;
 
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.supprimerNoeud:
-                firstGraph.removeNode(activNode);
+            case R.id.modifierLargeurArc:
+                final EditText inputLargeur = new EditText(this);
+                AlertDialog.Builder alertDialogBuilderLargeur = new AlertDialog.Builder(
+                        this);
+                // set title
+                alertDialogBuilderLargeur.setTitle("Entrer la nouvelle Largeur de l'arc");
+
+                // set dialog message
+                alertDialogBuilderLargeur
+                        .setPositiveButton("Modifier",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                // if this button is clicked, close
+                                // current activity
+                                largeur = Integer.valueOf(inputLargeur.getText().toString());
+                                if(inputLargeur.getText().toString().length()>0){
+                                    activArc.setWidth(largeur);
+                                    updateView();
+                                    inputLargeur.setText("");
+                                }
+                            }
+                        });
+
+                alertDialogBuilderLargeur.setView(inputLargeur);
+                // create alert dialog
+                alertDialog = alertDialogBuilderLargeur.create();
+                alertDialog.show();
+
+                return true;
+            case R.id.modifierEtiquetteArc:
+                final EditText inputEtiquette = new EditText(this);
+                AlertDialog.Builder alertDialogBuilderEtiquette = new AlertDialog.Builder(
+                        this);
+                // set title
+                alertDialogBuilderEtiquette.setTitle("Entrer la nouvelle étiquette");
+
+                // set dialog message
+                alertDialogBuilderEtiquette
+                        .setPositiveButton("Modifier",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                // if this button is clicked, close
+                                // current activity
+                                etiquette = inputEtiquette.getText().toString();
+
+                                if(etiquette.length()>0){
+                                    activArc.setEtiquette(etiquette);
+                                    updateView();
+                                    inputEtiquette.setText("");
+                                }
+
+                            }
+                        });
+
+                alertDialogBuilderEtiquette.setView(inputEtiquette);
+                // create alert dialog
+                alertDialog = alertDialogBuilderEtiquette.create();
+                alertDialog.show();
+                return true;
+            case R.id.supprimerArc:
+                firstGraph.removeArc(activArc);
                 updateView();
                 return true;
-            case R.id.modifierCouleur:
+            case R.id.modifierCouleurArc:
                 final Spinner inputColor = new Spinner(this);
                 ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.color_arrays, android.R.layout.simple_spinner_item);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -288,10 +350,67 @@ public class MainActivity extends AppCompatActivity {
                 alertDialogBuilderColor
                         .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
+                                int pos = inputColor.getSelectedItemPosition();
+                                switch (pos){
+                                    case 0:
+                                        activArc.setColor(Color.RED);
+                                        updateView();
+                                        break;
+                                    case 1:
+                                        activArc.setColor(Color.GREEN);
+                                        updateView();
+                                        break;
+                                    case 2:
+                                        activArc.setColor(Color.BLUE);
+                                        updateView();
+                                        break;
+                                    case 3:
+                                        activArc.setColor(Color.parseColor("#f49542"));
+                                        updateView();
+                                        break;
+                                    case 4:
+                                        activArc.setColor(Color.CYAN);
+                                        updateView();
+                                        break;
+                                    case 5:
+                                        activArc.setColor(Color.MAGENTA);
+                                        updateView();
+                                        break;
+                                    case 6:
+                                        activArc.setColor(Color.BLACK);
+                                        updateView();
+                                        break;
+                                }
+
+                            }
+                        });
+                alertDialogBuilderColor.setView(inputColor);
+                // create alert dialog
+                alertDialog = alertDialogBuilderColor.create();
+                alertDialog.show();
+                return true;
+            case R.id.supprimerNoeud:
+                firstGraph.removeNode(activNode);
+                updateView();
+                return true;
+            case R.id.modifierCouleur:
+                final Spinner inputColorNode = new Spinner(this);
+                ArrayAdapter<CharSequence> adapterNode = ArrayAdapter.createFromResource(this, R.array.color_arrays, android.R.layout.simple_spinner_item);
+                adapterNode.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                inputColorNode.setAdapter(adapterNode);
+                AlertDialog.Builder alertDialogBuilderColorNode = new AlertDialog.Builder(
+                        this);
+                // set title
+                alertDialogBuilderColorNode.setTitle("Changer la couleur");
+
+                // set dialog message
+                alertDialogBuilderColorNode
+                        .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
                                 //if this button is clicked, close
                                 // current activity
 
-                                int pos = inputColor.getSelectedItemPosition();
+                                int pos = inputColorNode.getSelectedItemPosition();
                                 switch (pos){
                                     case 0:
                                         activNode.setColor(Color.RED);
@@ -326,9 +445,9 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
-                alertDialogBuilderColor.setView(inputColor);
+                alertDialogBuilderColorNode.setView(inputColorNode);
                 // create alert dialog
-                alertDialog = alertDialogBuilderColor.create();
+                alertDialog = alertDialogBuilderColorNode.create();
                 alertDialog.show();
                 return true;
             case R.id.modifierEtiquette:
