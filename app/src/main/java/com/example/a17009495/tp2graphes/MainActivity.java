@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
                         } else if(modeModification && isOnArc()){
                            /* Node nFrom = activArc.getNodeFrom(), nTo = activArc.getNodeTo();
                             Path pathTemp = new Path();
-                            pathTemp.quadTo((nFrom.centerX()+nTo.centerX())/2,(nFrom.centerY()+nTo.centerY())/2,nTo.centerX(),nTo.centerY();
+                            pathTemp.quadTo((nFrom.centerX()+nTo.centerX())/2,(nFrom.centerY()+nTo.centerY())/2,nTo.centerX(),nTo.centerY());
 
                             float[] mid = {0, 0}, tan = {0, 0};
                             PathMeasure pm = new PathMeasure(pathTemp,false);

@@ -145,6 +145,11 @@ public class DrawableGraph extends Drawable {
                 path.cubicTo(n.centerX()+n.getRayon()+60,n.centerY()+n.getRayon()+40,
                         n.centerX()+n.getRayon()+60,n.centerY()-n.getRayon()-40,
                         n.centerX(),n.centerY());
+                PathMeasure pm = new PathMeasure(path,false);
+                pm.getPosTan(pm.getLength()/2,midPoint,tangent);
+                a.setMidPoint(midPoint);
+                a.setTangent(tangent);
+
             } else {
                //
                 pathTemp.lineTo(a.getNodeTo().centerX(), a.getNodeTo().centerY());

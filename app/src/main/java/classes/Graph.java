@@ -103,7 +103,6 @@ public class Graph {
 
             r = new RectF(xMid-50,yMid-50,xMid+50,yMid+50);
             if(r.contains(x,y)){
-
                 return a;
             }
         }
