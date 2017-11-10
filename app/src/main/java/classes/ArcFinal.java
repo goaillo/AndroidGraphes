@@ -14,6 +14,7 @@ public class ArcFinal extends Arc {
     public int largeurEtiquette;
     private int color;
     private int width;
+    public boolean hasBeenModified = false;
 
     public ArcFinal(Node _nodeFrom, Node _nodeTo, String _etiquette){
         super(_nodeFrom);
@@ -22,11 +23,6 @@ public class ArcFinal extends Arc {
         this.color = Color.WHITE;
         this.width = 5;
         this.largeurEtiquette = 30;
-    }
-
-    public ArcFinal(Node _nodeFrom, Node _nodeTo){
-        super(_nodeFrom);
-        this.nodeTo = _nodeTo;
     }
 
     public Node getNodeTo(){
@@ -79,5 +75,10 @@ public class ArcFinal extends Arc {
 
     public void setLargeurEtiquette(int largeurEtiquette) {
         this.largeurEtiquette = largeurEtiquette;
+    }
+
+    public void setMidPointCourb(float[] midPoint){
+        hasBeenModified = true;
+        this.setMidPoint(midPoint);
     }
 }

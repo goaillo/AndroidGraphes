@@ -27,6 +27,12 @@ public class DrawableGraph extends Drawable {
         graph = g;
     }
 
+    /**
+     * Méthode par dichotomie pour trouver un point d'intersection entre l'arc et le bord d'un noeud
+     * @param edgePath
+     * @param a
+     * @return
+     */
     public Path findPoint(Path edgePath, ArcFinal a)
     {
         double ecart = 1e-5;
@@ -109,13 +115,20 @@ public class DrawableGraph extends Drawable {
                 a.setTangent(tangent);
 
             } else {
-               //
-                pathTemp.lineTo(a.getNodeTo().centerX(), a.getNodeTo().centerY());
-                PathMeasure pm = new PathMeasure(pathTemp,false);
-                pm.getPosTan(pm.getLength()/2,midPoint,tangent);
-                path.quadTo(midPoint[0],midPoint[1], a.getNodeTo().centerX(), a.getNodeTo().centerY());
-                a.setMidPoint(midPoint);
-                a.setTangent(tangent);
+
+                //Si la courbe a deja été modifiée, on reprend le milieu qui convient
+                if(a.hasBeenModified){
+                    midPoint = a.getMidPoint();
+                    path.quadTo(midPoint[0],midPoint[1], a.getNodeTo().centerX(), a.getNodeTo().centerY());
+                } else {
+                    pathTemp.lineTo(a.getNodeTo().centerX(), a.getNodeTo().centerY());
+                    PathMeasure pm = new PathMeasure(pathTemp,false);
+                    pm.getPosTan(pm.getLength()/2,midPoint,tangent);
+                    path.quadTo(midPoint[0],midPoint[1], a.getNodeTo().centerX(), a.getNodeTo().centerY());
+                    a.setMidPoint(midPoint);
+                    a.setTangent(tangent);
+                }
+
             }
 
             Path pathFleche = findPoint(path,a);
@@ -130,7 +143,7 @@ public class DrawableGraph extends Drawable {
             pTexte.setColor(Color.WHITE);
             pTexte.setTextSize(a.getLargeurEtiquette());
             pTexte.setTextAlign(Paint.Align.CENTER);
-            canvas.drawText(a.getEtiquette(), midPoint[0] + 60, midPoint[1] + 60, pTexte);
+            canvas.drawText(a.getEtiquette(), midPoint[0] + 20, midPoint[1] + 20, pTexte);
 
         }
 

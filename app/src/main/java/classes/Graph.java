@@ -95,6 +95,13 @@ public class Graph {
         arcs.remove(a);
     }
 
+    /**
+     * Méthode pour récuperer un arc avec son milieu
+     * On dessine un rectF afin d'autoriser un marge sur la saisie du milieu par l'utilisateur
+     * @param x
+     * @param y
+     * @return
+     */
     public ArcFinal getOneArc(float x, float y){
         RectF r;
         for (ArcFinal a : arcs){
