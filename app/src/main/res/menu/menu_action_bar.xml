@@ -24,6 +24,11 @@
         android:icon="@android:drawable/ic_menu_delete"
         android:title="@string/modeDeplacementNoeuds"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/modeCourbure"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="@string/modeCourbure"
+        app:showAsAction="never" />
     //modeDeplacementNoeuds
 
 </menu>

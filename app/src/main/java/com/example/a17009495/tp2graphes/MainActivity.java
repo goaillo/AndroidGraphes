@@ -41,16 +41,17 @@ public class MainActivity extends AppCompatActivity {
     private float lastTouchUpY;
     private AlertDialog alertDialog;
     private String etiquette;
-    private int largeur;
+    private int largeur, largeurEtiquette;
     private Boolean onNode = false, onArc =false;
     private Node activNode;
     private ArcFinal activArc;
     private String value;
-    private boolean modeCreationArc = true,modeDeplacementNoeuds = false, modeCreationNoeud = false, modeModification = false;
+    private boolean modeCreationArc = true,modeDeplacementNoeuds = false, modeCreationNoeud = false, modeModification = false, modeCourbure = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.setTitle(R.string.modeCreationArc);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.registerForContextMenu(this.findViewById(R.id.imgView));
@@ -275,12 +276,39 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.modifierTailleEtiquette:
+                final EditText inputLargeurEtiquette = new EditText(this);
+                AlertDialog.Builder alertDialogBuilderLargeurEtiquette = new AlertDialog.Builder(
+                        this);
+                // set title
+                alertDialogBuilderLargeurEtiquette.setTitle("Entrer la nouvelle Largeur de l'etiquette");
+
+                // set dialog message
+                alertDialogBuilderLargeurEtiquette
+                        .setPositiveButton("Modifier",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                // if this button is clicked, close
+                                // current activity
+                                largeurEtiquette = Integer.valueOf(inputLargeurEtiquette.getText().toString());
+                                if(inputLargeurEtiquette.getText().toString().length()>0) {
+                                    activArc.setLargeurEtiquette(largeurEtiquette);
+                                    updateView();
+                                    inputLargeurEtiquette.setText("");
+                                }
+                            }
+                        });
+
+                alertDialogBuilderLargeurEtiquette.setView(inputLargeurEtiquette);
+                // create alert dialog
+                alertDialog = alertDialogBuilderLargeurEtiquette.create();
+                alertDialog.show();
+                return true;
             case R.id.modifierLargeurArc:
                 final EditText inputLargeur = new EditText(this);
                 AlertDialog.Builder alertDialogBuilderLargeur = new AlertDialog.Builder(
                         this);
                 // set title
-                alertDialogBuilderLargeur.setTitle("Entrer la nouvelle Largeur de l'arc");
+                alertDialogBuilderLargeur.setTitle("Entrer la nouvelle largeur de l'arc");
 
                 // set dialog message
                 alertDialogBuilderLargeur
@@ -565,6 +593,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.modeModifier:
                 modeCreationArc = false;
                 modeDeplacementNoeuds = false;
+                modeCourbure = false;
                 modeCreationNoeud = false;
                 modeModification = true;
                 this.setTitle(R.string.modeModifier);
@@ -572,6 +601,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.modeCreationArc:
                 modeDeplacementNoeuds = false;
                 modeCreationArc = true;
+                modeCourbure = false;
                 modeCreationNoeud = false;
                 modeModification = false;
                 this.setTitle(R.string.modeCreationArc);
@@ -579,6 +609,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.modeCreationNoeud:
                 modeDeplacementNoeuds = false;
                 modeCreationArc = false;
+                modeCourbure = false;
                 modeCreationNoeud = true;
                 modeModification = false;
                 this.setTitle(R.string.modeCreationNoeud);
@@ -586,9 +617,18 @@ public class MainActivity extends AppCompatActivity {
             case R.id.modeDeplacementNoeuds:
                 modeDeplacementNoeuds = true;
                 modeCreationArc = false;
+                modeCourbure = false;
                 modeCreationNoeud = false;
                 modeModification = false;
                 this.setTitle(R.string.modeDeplacementNoeuds);
+                return true;
+            case R.id.modeCourbure:
+                modeCourbure = true;
+                modeModification = false;
+                modeDeplacementNoeuds = false;
+                modeCreationArc = false;
+                modeCreationNoeud =false;
+                this.setTitle(R.string.modeCourbure);
                 return true;
         }
 

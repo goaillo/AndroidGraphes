@@ -126,6 +126,11 @@ public class DrawableGraph extends Drawable {
 
             canvas.drawPath(pathFleche,paintFleche);
             canvas.drawPath(path, pArc);
+            Paint pTexte = new Paint();
+            pTexte.setColor(Color.WHITE);
+            pTexte.setTextSize(a.getLargeurEtiquette());
+            pTexte.setTextAlign(Paint.Align.CENTER);
+            canvas.drawText(a.getEtiquette(), midPoint[0] + 60, midPoint[1] + 60, pTexte);
 
         }
 

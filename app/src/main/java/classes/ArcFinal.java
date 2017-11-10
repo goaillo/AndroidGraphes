@@ -11,6 +11,7 @@ public class ArcFinal extends Arc {
     private float [] midPoint;
     private float [] tangent;
     private String etiquette;
+    public int largeurEtiquette;
     private int color;
     private int width;
 
@@ -20,6 +21,7 @@ public class ArcFinal extends Arc {
         this.etiquette = _etiquette;
         this.color = Color.WHITE;
         this.width = 5;
+        this.largeurEtiquette = 30;
     }
 
     public ArcFinal(Node _nodeFrom, Node _nodeTo){
@@ -69,5 +71,13 @@ public class ArcFinal extends Arc {
 
     public void setEtiquette(String etiquette) {
         this.etiquette = etiquette;
+    }
+
+    public int getLargeurEtiquette() {
+        return largeurEtiquette;
+    }
+
+    public void setLargeurEtiquette(int largeurEtiquette) {
+        this.largeurEtiquette = largeurEtiquette;
     }
 }
